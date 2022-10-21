@@ -1,0 +1,17 @@
+Github link: https://github.com/GeorgeDanicico/Formal-Languages-and-Compiler-Design
+
+The ADT I've chosen for the Symbol Table is hash table with linear probing.
+The symbol table has a fixed size and a list of linked lists.
+The key for each element is generated as following: the hash function will compute the sum of the
+characters of the element based on the ascii codes, and then will return the sum modulo size_of_hashtable.
+When there is a collision, the element just gets a new space allocated in the memory and becomes the tail of the
+linked list that is on the position return by the hash function
+Methods:
+- add(string key): adds an element in the symbol table
+- hash(string key): computes the hash value
+- size(): returns the size of the hash table
+- contains(string key): return true if the hash table contains the required key, otherwise false
+- position(String key): return the position in the array list of the linked list that contains the key,
+and the index in the linked list
+- remove(string key): removes a key from the hash table if it exists and return true if it removed the key
+    if it existed
