@@ -2,22 +2,45 @@ package model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SymbolTable {
-    private ArrayList<LinkedList<String>> hashTable;
+    private List<LinkedList<String>> hashTable;
     private int size;
+    private Integer noOfElements;
 
     public SymbolTable(int size) {
         this.size = size;
         this.hashTable = new ArrayList<>();
-        for(int i=0;i<size;++i) this.hashTable.add(new LinkedList<>());
+        noOfElements = 0;
+
+        for(int i = 0; i < size; i++)
+            this.hashTable.add(new LinkedList<>());
     }
 
     public int size() {
         return size;
     }
 
-    private int hash(String key) {
+    private void rehash() {
+        int newSize = 2 * size;
+
+        List<LinkedList<String>> newHashTable = new ArrayList<>();
+        for(int i = 0; i < 2 * size; i++)
+            newHashTable.add(new LinkedList<>());
+
+        for (int i = 0; i < size; i++) {
+            for (String key : hashTable.get(i)) {
+                int hashValue = hash(key, newSize);
+                newHashTable.get(hashValue).add(key);
+            }
+        }
+
+        hashTable = newHashTable;
+        this.size = newSize;
+    }
+
+    private int hash(String key, int size) {
         int sum = 0;
         for(int i = 0; i < key.length(); i++) {
             sum += key.charAt(i);
@@ -27,7 +50,11 @@ public class SymbolTable {
 
     public boolean add(String key){
 
-        int hashValue = hash(key);
+        int hashValue = hash(key, this.size);
+        noOfElements++;
+        double loadFactor = (double) noOfElements / size;
+        if (loadFactor > 0.75)
+            rehash();
 
         if(!hashTable.get(hashValue).contains(key)){
             hashTable.get(hashValue).add(key);
@@ -37,14 +64,14 @@ public class SymbolTable {
     }
 
     public boolean contains(String key){
-        int hashValue = hash(key);
+        int hashValue = hash(key, this.size);
 
         return hashTable.get(hashValue).contains(key);
     }
 
     public Pair<Integer, Integer> position(String key){
         if (this.contains(key)){
-            int positionBasedOnHash = this.hash(key);
+            int positionBasedOnHash = this.hash(key, size);
             int listPosition = -1;
 
             if (hashTable.get(positionBasedOnHash).contains(key)) {
@@ -57,7 +84,7 @@ public class SymbolTable {
     }
 
     public boolean remove(String key){
-        int hashValue = hash(key);
+        int hashValue = hash(key, size);
 
         if(hashTable.get(hashValue).contains(key)){
             hashTable.get(hashValue).remove(key);
