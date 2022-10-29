@@ -1,14 +1,15 @@
 package model;
 
-public class Pair<T, V> {
+public class Triplet<T, V, U> {
     private T first;
     private V second;
+    private U third;
 
-    public Pair(T first, V second) {
+    public Triplet(T first, V second, U third) {
         this.first = first;
         this.second = second;
+        this.third = third;
     }
-
 
     public T getFirst() {
         return first;
@@ -26,8 +27,11 @@ public class Pair<T, V> {
         this.second = second;
     }
 
-    @Override
-    public String toString() {
-        return "(First: " + first + ", Second: " + second + ")";
+    public U getThird() {
+        return third;
+    }
+
+    public void setThird(U third) {
+        this.third = third;
     }
 }

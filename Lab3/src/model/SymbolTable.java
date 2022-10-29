@@ -96,6 +96,7 @@ public class SymbolTable {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
+        string.append("Symbol Table: \n");
 
         for (int i = 0; i < size; i++) {
             string.append(i).append(": {");

@@ -1,0 +1,23 @@
+Github link: https://github.com/GeorgeDanicico/Formal-Languages-and-Compiler-Design
+
+The Scanner parses a code file from top to bottom and determines if the program is written lexically correct.
+The scanner include 3 tables, Token table, Symbol Table and Program Internal Form.
+The token table keeps key-value pairs of each token that is defined in my language which is mapped to a random integer.
+The symbol table will keep key-value pairs as well. The key will a token, identifier or constant. The value of for each
+key will represent the position in the symbol table (see DocumentationLab2.txt)
+Program Internal Form will keep records of triplets of shape <token, token code, symbol table position>.
+
+In order to use te scanner, the scan method, which takes as arguments the file we wish to check.
+The scanner will go line by line. For each line, it will iterate through all the characters and will format the line
+such that after splitting the line, we will be left with an array of string that contains all the tokens, constants and
+identifiers. The rules for formatting are the following:
+    - iterate through all the characters until a valid token is met. If the token is different than '+' or '-', then
+    we stop there and save the sequence of characters (which could constitute a token as well). Otherwise it will
+    continue to iterate to find the members of the operation.
+    - there are special cases of >, <, : and +, since there are some tokens that include these symbols (>=, <=, :=, +=)
+
+After the formatting of the line is complete, we move on to the next phase, the parsing of the line.
+Here, it is checked if the code is lexically correct, by checking the patterns of all tokens, and if it doesn't appear
+in the token table, then it is checked if it is a constant or an identifier and if it is none of them, then an error
+is raised to inform that the program is not lexically correct. Otherwise the program will continue to parse the line until
+it reaches the end of the file.
