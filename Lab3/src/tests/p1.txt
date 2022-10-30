@@ -9,7 +9,7 @@ read c;
 int maxim:=a;
 int minim:=a;
 
-if ( -b < maxim )
+if ( -b1 < maxim )
 [
 	maxim := b ;
 ]

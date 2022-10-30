@@ -29,12 +29,14 @@ public class JavaScanner {
         return endIndex;
     }
 
+    // Check if a character is a digit
     private boolean isCharDigit(char ch) {
         int value = ch - 48;
 
         return (value >= 0 && value <= 9);
     }
 
+    // Check if a character is a lower or upper case letter
     private boolean isCharLetter(char ch) {
         int letter = ch - 97;
         int capitalLetter = ch - 65;
@@ -48,15 +50,21 @@ public class JavaScanner {
         this.symbolTable = new SymbolTable(SYMBOL_TABLE_SIZE);
     }
 
-    public String[] formatLine(String line) {
+    // Formats the line
+    private String[] formatLine(String line) {
         String LINE_SEPARATOR = "~";
         StringBuilder sb = new StringBuilder();
         int startIndex = 0;
 
         for (int i = 0; i < line.length(); i++) {
             char ch = line.charAt(i);
+            // ignore spaces.
             if (ch == ' ') continue;
 
+            // Check if there is the one of the symbols that is compound of 2 characters
+            // Else check if the character is a quote, which would mark te beginning of a char constant
+            // Else check if there is an identifier or a number that starts with +/-
+            // Else check if the character is a valid token.
             if (i < line.length() - 1 && (ch == '<' || ch == '>' || ch == ':' || ch == '=')) {
                 char nextCh = line.charAt(i + 1);
                 if (nextCh == '=') {
@@ -70,6 +78,8 @@ public class JavaScanner {
                 i++;
                 while (i < line.length() && line.charAt(i) != '"') i++;
 
+                // get the substring that constitutes the string and append it to the stringbuilder along with
+                // the separator
                 if (i < line.length()) {
                     String string = line.substring(startIndex, i + 1);
                     sb.append(string).append(LINE_SEPARATOR);
@@ -166,7 +176,11 @@ public class JavaScanner {
         if (isCharConstant(token)) return false;
 
         for (int i = 0; i < tokenLength; i++) {
-            if (tokenTable.searchToken(String.valueOf(token.charAt(i))) || isCharLetter(token.charAt(i))) {
+            char ch = token.charAt(i);
+            // check the special cases when the token is a string such as "+1212", "-3231"
+            if (i == 0 && (ch == '+' || ch == '-')) continue;
+
+            if (tokenTable.searchToken(String.valueOf(ch)) || isCharLetter(ch)) {
                 return false;
             }
         }
@@ -181,10 +195,18 @@ public class JavaScanner {
 
         if (isCharConstant(token) || isIntConstant(token)) return false;
 
-        if (!isCharLetter(token.charAt(0))) return false;
+        // Treat the special case when there is + or - before the name of an identifier
+        if (token.charAt(0) != '+' && token.charAt(0) != '-' && !isCharLetter(token.charAt(0))) return false;
 
         for (int i = 0; i < tokenLength; i++) {
-            if (tokenTable.searchToken(String.valueOf(token.charAt(i)))) {
+            char ch = token.charAt(i);
+            if (i == 0 && (ch == '+' || ch == '-')) continue;
+
+            // Checks if the next character after a + or - is a letter
+            if (i > 0 && (token.charAt(i - 1) == '+' || token.charAt(i - 1) == '-') && !isCharLetter(token.charAt(i)))
+                return false;
+
+            if (tokenTable.searchToken(String.valueOf(ch))) {
                 return false;
             }
         }
