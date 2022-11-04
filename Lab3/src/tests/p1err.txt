@@ -1,4 +1,4 @@
-int 1a ;
+int a1 ;
 int b;
 int c ;
 
@@ -9,12 +9,12 @@ read c ;
 int maxim := a ;
 int minim := a ;
 
-if ( b > maxim )
+if ( 1b > maxim )
 [
 	maxim := b ;
 ]
 
-if ( c > maxim )
+if ( 1c > maxim )
 [
 	maxim := c ;
 ]

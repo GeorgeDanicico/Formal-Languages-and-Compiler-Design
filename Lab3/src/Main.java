@@ -10,11 +10,13 @@ public class Main {
         String pathP1err = "src/tests/p1err.txt";
 
         try {
-            javaScanner.scan(pathP1);
+            javaScanner.scan(pathP1err);
             System.out.println("Program is lexically correct.");
         } catch (Exception e) {
             System.out.println("Program is not lexically correct.\n" + e);
         }
+
+        javaScanner.writeToFile("STerr.out", "PIFerr.out");
 
     }
 }

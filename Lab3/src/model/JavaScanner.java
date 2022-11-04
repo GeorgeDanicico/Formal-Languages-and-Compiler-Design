@@ -1,8 +1,6 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 public class JavaScanner {
     private TokenTable tokenTable;
@@ -46,8 +44,8 @@ public class JavaScanner {
 
     public JavaScanner() {
         this.tokenTable = new TokenTable();
-        this.programInternalForm = new ProgramInternalForm();
         this.symbolTable = new SymbolTable(SYMBOL_TABLE_SIZE);
+        this.programInternalForm = new ProgramInternalForm();
     }
 
     // Formats the line
@@ -216,5 +214,20 @@ public class JavaScanner {
 
     public String getState() {
         return programInternalForm.toString() + "\n" + symbolTable.toString();
+    }
+
+    public void writeToFile(String stFile, String pifFile) {
+        try {
+            BufferedWriter stBufferedWriter = new BufferedWriter(new FileWriter(stFile));
+            BufferedWriter pifBufferedWriter = new BufferedWriter(new FileWriter(pifFile));
+
+            stBufferedWriter.write(symbolTable.toString());
+            pifBufferedWriter.write(programInternalForm.toString());
+
+            stBufferedWriter.close();
+            pifBufferedWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
