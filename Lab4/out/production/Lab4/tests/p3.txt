@@ -1,0 +1,14 @@
+int a ;
+int sum := 0 ;
+int i := 0 ;
+
+read n ;
+
+for (i := 0 , i <= n , i := i + 1 )
+[
+	read a ;
+	sum +:= a ;
+]
+
+write ( "The sum of the numbers is: " ) ;
+write ( sum ) ;

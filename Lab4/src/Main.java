@@ -1,0 +1,73 @@
+import model.FiniteAutomaton;
+import model.JavaScanner;
+import model.SymbolTable;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void showMenu() {
+        System.out.println("Menu: ");
+        System.out.println("1. Print the set of states.");
+        System.out.println("2. Print the alphabet");
+        System.out.println("3. Print the transitions.");
+        System.out.println("4. Print the initial state.");
+        System.out.println("5. Print the final states.");
+        System.out.println("6. Check if sequence is accepted by the FA.");
+        System.out.println("0. Exit");
+    }
+
+    public static void main(String[] args) {
+        FiniteAutomaton finiteAutomaton = new FiniteAutomaton("src/identifier.csv");
+        JavaScanner javaScanner = new JavaScanner();
+
+        try {
+            javaScanner.scan("src/tests/p1.txt");
+            System.out.println("Program is lexically correct.");
+        } catch (Exception e) {
+            System.out.println("Program is not lexically correct.\n" + e);
+        }
+
+        while (true) {
+            showMenu();
+            Scanner scanner = new Scanner(System.in);
+
+            String command = scanner.nextLine();
+            int com = Integer.parseInt(command);
+
+            switch (com) {
+                case 1 -> {
+                    System.out.println("The set of states is: ");
+                    System.out.println(finiteAutomaton.getStates());
+                }
+                case 2 -> {
+                    System.out.println("The alphabet is: ");
+                    System.out.println(finiteAutomaton.getAlphabet());
+                }
+                case 3 -> {
+                    System.out.println("The transitions are: ");
+                    System.out.println(finiteAutomaton.getTransitions());
+                }
+                case 4 -> {
+                    System.out.println("The initial state is: ");
+                    System.out.println(finiteAutomaton.getInitialState());
+                }
+                case 5 -> {
+                    System.out.println("The set of final states is: ");
+                    System.out.println(finiteAutomaton.getFinalStates());
+                }
+                case 6 -> {
+                    System.out.println("Insert the sequence > ");
+                    String sequence = scanner.nextLine();
+                    boolean isValid = finiteAutomaton.checkIfSequenceIsValid(sequence);
+
+                    if (isValid) {
+                        System.out.println("The given sequence is accepted by the FA.");
+                    } else {
+                        System.out.println("The given sequence is not accepted by the FA.");
+                    }
+                }
+            }
+        }
+
+    }
+}
