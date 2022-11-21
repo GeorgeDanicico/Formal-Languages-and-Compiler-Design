@@ -136,6 +136,13 @@ public class JavaScanner {
                     String tk = isIdentifier(token);
 
                     if (tk != null) {
+                        char firstChar = tk.charAt(0);
+                        if (firstChar == '+' || firstChar == '-') {
+                            symbolTable.add(String.valueOf(firstChar));
+                            tk = tk.substring(1);
+                            programInternalForm.add(String.valueOf(firstChar), tokenTable.getTokenCode(String.valueOf(firstChar)), symbolTable.position(String.valueOf(firstChar)));
+                        }
+
                         symbolTable.add(tk);
                         Pair<Integer, Integer> symbolTablePosition = symbolTable.position(tk);
                         programInternalForm.add("identifier", 0, symbolTablePosition);
@@ -199,13 +206,12 @@ public class JavaScanner {
         int tokenLength = token.length();
         if (tokenLength == 0) return null;
 
-        if (isCharConstant(token) || integerFA.checkIfSequenceIsValid(token)) return null;
-
         // Treat the special case when there is + or - before the name of an identifier
-        if (token.charAt(0) == '+' || token.charAt(0) == '-') token = token.substring(1);
+        String savedToken = token;
+        if (token.charAt(0) == '+' || token.charAt(0) == '-') savedToken = token.substring(1);
 
-        if (identifierFA.checkIfSequenceIsValid(token)) {
-            if (tokenTable.searchToken(token)) return null;
+        if (identifierFA.checkIfSequenceIsValid(savedToken)) {
+            if (tokenTable.searchToken(savedToken)) return null;
 
             return token;
         }

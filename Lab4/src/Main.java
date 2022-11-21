@@ -27,47 +27,7 @@ public class Main {
             System.out.println("Program is not lexically correct.\n" + e);
         }
 
-        while (true) {
-            showMenu();
-            Scanner scanner = new Scanner(System.in);
-
-            String command = scanner.nextLine();
-            int com = Integer.parseInt(command);
-
-            switch (com) {
-                case 1 -> {
-                    System.out.println("The set of states is: ");
-                    System.out.println(finiteAutomaton.getStates());
-                }
-                case 2 -> {
-                    System.out.println("The alphabet is: ");
-                    System.out.println(finiteAutomaton.getAlphabet());
-                }
-                case 3 -> {
-                    System.out.println("The transitions are: ");
-                    System.out.println(finiteAutomaton.getTransitions());
-                }
-                case 4 -> {
-                    System.out.println("The initial state is: ");
-                    System.out.println(finiteAutomaton.getInitialState());
-                }
-                case 5 -> {
-                    System.out.println("The set of final states is: ");
-                    System.out.println(finiteAutomaton.getFinalStates());
-                }
-                case 6 -> {
-                    System.out.println("Insert the sequence > ");
-                    String sequence = scanner.nextLine();
-                    boolean isValid = finiteAutomaton.checkIfSequenceIsValid(sequence);
-
-                    if (isValid) {
-                        System.out.println("The given sequence is accepted by the FA.");
-                    } else {
-                        System.out.println("The given sequence is not accepted by the FA.");
-                    }
-                }
-            }
-        }
+        javaScanner.writeToFile("ST.out", "PIF.out");
 
     }
 }

@@ -10,19 +10,22 @@ import java.util.Map;
 import java.util.Set;
 
 public class FiniteAutomaton {
-    private Set<String> alphabet, states, finalStates;
     private String initialState;
+    private Set<String> alphabet;
+    private Set<String> states;
+    private Set<String> finalStates;
+
     private Map<Pair<String, String>, Set<String>> transitions;
 
     public FiniteAutomaton(String fileName) {
-        this.states = new HashSet<>();
         this.alphabet = new HashSet<>();
+        this.states = new HashSet<>();
         this.finalStates = new HashSet<>();
         this.transitions = new HashMap<>();
-        readFromFile(fileName);
+        readFile(fileName);
     }
 
-    private void readFromFile(String fileName) {
+    private void readFile(String fileName) {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
             String line;
@@ -99,7 +102,7 @@ public class FiniteAutomaton {
     public boolean checkIfSequenceIsValid(String sequence) {
         String state = this.initialState;
 
-        if (sequence.length() == 0) return this.finalStates.contains(state);
+        if (sequence.length() == 0) return false;
         int i = 0;
         while (i < sequence.length()) {
             char c = sequence.charAt(i);
