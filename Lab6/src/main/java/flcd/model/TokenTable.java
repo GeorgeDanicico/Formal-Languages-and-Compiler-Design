@@ -1,4 +1,4 @@
-package model;
+package flcd.model;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,9 @@
-import model.FiniteAutomaton;
-import model.Grammar;
-import model.JavaScanner;
-import model.SymbolTable;
+package flcd;
+
+import flcd.model.FiniteAutomaton;
+import flcd.model.Grammar;
+import flcd.model.JavaScanner;
+import flcd.model.SymbolTable;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -18,7 +20,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        Grammar grammar = Grammar.provideGrammar("src/io/bnf-test.txt");
+        Grammar grammar = Grammar.provideGrammar("src/main/java/flcd/io/bnf-syntax.txt");
         Scanner scanner = new Scanner(System.in);
 
         while (true) {

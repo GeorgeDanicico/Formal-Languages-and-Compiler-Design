@@ -1,8 +1,7 @@
-package model;
+package flcd.model;
 
-import common.Pair;
-import common.Triplet;
-
+import flcd.common.Pair;
+import flcd.common.Triplet;
 import java.util.ArrayList;
 import java.util.List;
 

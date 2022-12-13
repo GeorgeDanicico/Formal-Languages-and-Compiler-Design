@@ -1,6 +1,6 @@
-package model;
+package flcd.model;
 
-import common.Pair;
+import flcd.common.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

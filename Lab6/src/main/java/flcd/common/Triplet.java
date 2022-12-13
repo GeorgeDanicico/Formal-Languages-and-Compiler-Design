@@ -1,4 +1,4 @@
-package common;
+package flcd.common;
 
 public class Triplet<T, V, U> {
     private T first;

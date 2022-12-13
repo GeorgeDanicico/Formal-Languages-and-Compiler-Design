@@ -1,4 +1,4 @@
-package common;
+package flcd.common;
 
 import java.util.Objects;
 
