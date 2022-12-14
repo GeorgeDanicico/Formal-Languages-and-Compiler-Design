@@ -13,12 +13,11 @@ public class LLParser {
      * @param grammar -> the given grammar
      * @return
      */
-    private static Map<String, String> getProductions(String nonTerminal, Grammar grammar) {
+    private static Map<String, String> getNonTerminalProductions(String nonTerminal, Grammar grammar) {
         Map<String, Set<String>> productions = grammar.getProductions();
         Map<String, String> requiredProductions = new HashMap<>();
 
         for (Map.Entry<String, Set<String>> entry : productions.entrySet()) {
-
             // iterate through the production of every nonterminal and check if
             // the given nonterminal appears in the right hand side of the production.
             for (String production : entry.getValue()) {
@@ -31,23 +30,6 @@ public class LLParser {
         return requiredProductions;
     }
 
-    /**
-     * @param nonTerminals -> non terminals in the grammar
-     * @param grammar
-     * @return -> a map that has as key a non terminal, and as value a map containing all the productions where
-     *          the key is in the right hand side.
-     */
-    private static Map<String, Map<String, String>> getAllProductions(Set<String> nonTerminals, Grammar grammar) {
-        Map<String, Map<String, String>> nonTerminalProductions = new HashMap<>();
-
-        for (var nonTerminal : nonTerminals) {
-            Map<String, String> productions = getProductions(nonTerminal, grammar);
-            nonTerminalProductions.put(nonTerminal, productions);
-        }
-
-        return nonTerminalProductions;
-    }
-
     private static String getFirstItemAfter(String productionRHS, String nonTerminal) {
         String[] nonTerminals = productionRHS.split(" ");
         // Return the index of the nonTerminal
@@ -56,6 +38,8 @@ public class LLParser {
                 .findFirst()
                 .getAsInt(); // it is known that non terminal is present in productionRHS
 
+        // If there is no item after the given nonterminal, return empty string (epsilon)
+        // else return the next item.
         if (index == nonTerminals.length - 1) {
             return "";
         } else {
@@ -68,33 +52,36 @@ public class LLParser {
         return null;
     }
 
-    public static Map<String, Set<String>> generateFollow(Grammar grammar, Map<String, Set<String>> first) {
-
-
+    public static Map<String, Set<String>> generateFollow(Grammar grammar, Map<String, Set<String>> firstSet) {
         Map<String, Set<String>> follow = new HashMap<>();
         Set<String> nonTerminals = grammar.getNonTerminals();
-        var nonTerminalProductions = getAllProductions(nonTerminals, grammar);
 
         for (String nonTerminal : grammar.getNonTerminals()) {
             follow.put(nonTerminal, null);
         }
 
-        follow.put(grammar.getStart(), new HashSet<>(){{
-            add("");
-        }});
+        follow.put(grammar.getStart(), new HashSet<>(){{add("");}});
+        boolean isChanged = true;
 
-        boolean changed = true;
-
-        while (changed) {
+        while (isChanged) {
+            Map<String, Set<String>> newFollowColumn = new HashMap<>();
 
             for (String nonTerminal : nonTerminals) {
-                var productions = nonTerminalProductions.get(nonTerminal);
-
-                for (var entry : productions.entrySet()) {
-
+                newFollowColumn.put(nonTerminal, new HashSet<>());
+                var productions = getNonTerminalProductions(nonTerminal, grammar);
+                for (var production : productions.entrySet()) {
+                    var firstItemAfter = getFirstItemAfter(production.getValue(), nonTerminal);
+                    for (var terminal : firstSet.get(firstItemAfter)) {
+                        if (terminal.equals("")) {
+                            isChanged = newFollowColumn.get(nonTerminal).addAll(follow.get(production.getKey()));
+                        } else {
+                            isChanged = newFollowColumn.get(nonTerminal).addAll(follow.get(production.getKey()));
+                            isChanged = newFollowColumn.get(nonTerminal).addAll(firstSet.get(firstItemAfter)) || isChanged;
+                        }
+                    }
                 }
             }
-
+            follow.putAll(newFollowColumn);
         }
 
         return follow;

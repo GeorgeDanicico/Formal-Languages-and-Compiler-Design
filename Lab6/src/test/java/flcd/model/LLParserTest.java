@@ -16,9 +16,9 @@ public class LLParserTest extends TestCase {
     }
 
     @Test
-    public void testGetProductions() {
-//        Map<String, String> productions = LLParser.getProductions("expression", grammar);
-//
-//        System.out.println(productions);
+    public void testGenerateFollow() {
+        Map<String, Set<String>> follow = LLParser.generateFollow(grammar, null);
+
+        System.out.println(follow);
     }
 }
