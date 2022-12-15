@@ -60,7 +60,8 @@ public class LLParserTest extends TestCase {
 
         assertEquals(5, follow.size());
         assertTrue(follow.containsKey("A"));
-        assertEquals(3, follow.get("A").size());
-        assertEquals(2, follow.get("S").size());
+        assertEquals(2, follow.get("A").size());
+        assertEquals(4, follow.get("D").size());
+        assertTrue(follow.get("D").contains("*"));
     }
 }
