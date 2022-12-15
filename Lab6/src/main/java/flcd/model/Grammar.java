@@ -2,19 +2,20 @@ package flcd.model;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Grammar {
     private final String start;
     private final Set<String> nonTerminals;
     private final Set<String> terminals;
-    private final Map<String, Set<String>> productions;
-    private final boolean isCFG;
+    private final Map<String, Set<List<String>>> productions;
+    private final boolean isContextFree;
 
     public static Grammar provideGrammar(String fileName) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
         var nonTerminals = new HashSet<String>();
         var terminals = new HashSet<String>();
-        var productions = new HashMap<String, Set<String>>();
+        var productions = new HashMap<String, Set<List<String>>>();
         var isCFG = true;
         var line = bufferedReader.readLine();
         String start = null;
@@ -38,15 +39,24 @@ public class Grammar {
             var currentProductions = tokens[1].split("\\|");
             for (var production: currentProductions) {
                 productions.computeIfAbsent(nonTerminal, k -> new HashSet<>());
-                productions.get(nonTerminal).add(production.trim());
+                var rhsTokens = Stream.of(production.trim().split(" "))
+                        .map(String::trim)
+                        .toList();
+                var updatedTokens = new ArrayList<String>();
 
-                var elements = production.split(" ");
-                for (var element: elements) {
-                    var length = element.length();
-                    if (length >= 3 && element.charAt(0) == '"' && element.charAt(length - 1) == '"') {
-                        terminals.add(element.trim());
+                for (var token: rhsTokens) {
+                    var length = token.length();
+                    if (length >= 2 && token.charAt(0) == '"' && token.charAt(length - 1) == '"') {
+                        var trimmedTerminal = token.substring(1, length - 1);
+                        terminals.add(trimmedTerminal);
+                        updatedTokens.add(trimmedTerminal);
+                    }
+                    else {
+                        updatedTokens.add(token);
                     }
                 }
+
+                productions.get(nonTerminal).add(updatedTokens);
             }
 
             line = bufferedReader.readLine();
@@ -55,16 +65,16 @@ public class Grammar {
         return new Grammar(start, nonTerminals, terminals, productions, isCFG);
     }
 
-    private Grammar(String start, Set<String> nonTerminals, Set<String> terminals, Map<String, Set<String>> productions,
+    private Grammar(String start, Set<String> nonTerminals, Set<String> terminals, Map<String, Set<List<String>>> productions,
                     boolean isCFG) {
         this.start = start;
         this.nonTerminals = nonTerminals;
         this.terminals = terminals;
         this.productions = productions;
-        this.isCFG = isCFG;
+        this.isContextFree = isCFG;
     }
 
-    public Set<String> getProductions(String nonTerminal) {
+    public Set<List<String>> getProductions(String nonTerminal) {
         return productions.get(nonTerminal);
     }
 
@@ -80,11 +90,11 @@ public class Grammar {
         return terminals;
     }
 
-    public Map<String, Set<String>> getProductions() {
+    public Map<String, Set<List<String>>> getProductions() {
         return productions;
     }
 
-    public boolean isCFG() {
-        return isCFG;
+    public boolean isContextFree() {
+        return isContextFree;
     }
 }

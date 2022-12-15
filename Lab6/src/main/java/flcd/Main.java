@@ -1,9 +1,6 @@
 package flcd;
 
-import flcd.model.FiniteAutomaton;
 import flcd.model.Grammar;
-import flcd.model.JavaScanner;
-import flcd.model.SymbolTable;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -47,7 +44,7 @@ public class Main {
                             grammar.getProductions(nonTerminal));
                     break;
                 case 5:
-                    System.out.println("Is this grammar a CFG? " + grammar.isCFG() +
+                    System.out.println("Is this grammar a CFG? " + grammar.isContextFree() +
                             "\n");
                     break;
 
