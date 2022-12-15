@@ -3,7 +3,7 @@ package flcd.model;
 import java.util.*;
 
 public class LLParser {
-    private static final String EPSILON = "";
+    private static final String EPSILON = "eps";
 
     public static Map<String, Set<String>> computeFirst(Grammar grammar) {
         var nonTerminals = grammar.getNonTerminals();
@@ -160,7 +160,7 @@ public class LLParser {
             follow.put(nonTerminal, new HashSet<>());
         }
 
-        follow.put(grammar.getStart(), new HashSet<>(){{add("");}});
+        follow.put(grammar.getStart(), new HashSet<>(){{add(EPSILON);}});
         boolean isFollowChanged = true;
 
         while (isFollowChanged) {
