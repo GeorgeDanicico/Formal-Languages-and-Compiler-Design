@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8f15b88e-188f-44c0-8982-2f57ad2f46fe" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/common/Pair.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/common/Triplet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/model/FiniteAutomaton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/model/Grammar.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/model/JavaScanner.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/model/LLParser$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/model/LLParser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/model/ProgramInternalForm.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/model/SymbolTable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/flcd/model/TokenTable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$10.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$11.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$12.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$13.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$14.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$15.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$16.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$17.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$18.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$19.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$20.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$21.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$8.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest$9.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/flcd/model/LLParserTest.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2IxHSHrGVhyr1m3pL2iwTwe3kP7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RunManager" selected="JUnit.LLParserTest.testComputeFollow1">
+    <configuration name="LLParserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Lab6" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="flcd.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="flcd.model" />
+      <option name="MAIN_CLASS_NAME" value="flcd.model.LLParserTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LLParserTest.testComputeFirst1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Lab6" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="flcd.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="flcd.model" />
+      <option name="MAIN_CLASS_NAME" value="flcd.model.LLParserTest" />
+      <option name="METHOD_NAME" value="testComputeFirst1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LLParserTest.testComputeFirst2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Lab6" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="flcd.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="flcd.model" />
+      <option name="MAIN_CLASS_NAME" value="flcd.model.LLParserTest" />
+      <option name="METHOD_NAME" value="testComputeFirst2" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LLParserTest.testComputeFollow1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Lab6" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="flcd.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="flcd.model" />
+      <option name="MAIN_CLASS_NAME" value="flcd.model.LLParserTest" />
+      <option name="METHOD_NAME" value="testComputeFollow1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LLParserTest.testComputeFollow2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Lab6" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="flcd.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="flcd.model" />
+      <option name="MAIN_CLASS_NAME" value="flcd.model.LLParserTest" />
+      <option name="METHOD_NAME" value="testComputeFollow2" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.LLParserTest" />
+      <item itemvalue="JUnit.LLParserTest.testComputeFollow1" />
+      <item itemvalue="JUnit.LLParserTest.testComputeFollow2" />
+      <item itemvalue="JUnit.LLParserTest.testComputeFirst1" />
+      <item itemvalue="JUnit.LLParserTest.testComputeFirst2" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.LLParserTest.testComputeFollow1" />
+        <item itemvalue="JUnit.LLParserTest" />
+        <item itemvalue="JUnit.LLParserTest.testComputeFirst1" />
+        <item itemvalue="JUnit.LLParserTest.testComputeFirst2" />
+        <item itemvalue="JUnit.LLParserTest.testComputeFollow2" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8f15b88e-188f-44c0-8982-2f57ad2f46fe" name="Changes" comment="" />
+      <created>1671116315519</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1671116315519</updated>
+      <workItem from="1671116316983" duration="54000" />
+      <workItem from="1671116385884" duration="288000" />
+      <workItem from="1671131947387" duration="2392000" />
+      <workItem from="1671134432653" duration="215000" />
+      <workItem from="1671134761763" duration="1975000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>
