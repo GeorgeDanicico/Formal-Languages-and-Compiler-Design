@@ -1,69 +1,125 @@
 package flcd.model;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class LLParser {
-    public static Map<String, Set<String>> computeFirst(Grammar grammar) {
-        var first = new HashMap<String, Set<String>>();
-        var toAdd = new HashMap<String, Queue<String>>();
+    private static final String EPSILON = "";
 
-        var terminals = grammar.getTerminals();
+    public static Map<String, Set<String>> computeFirst(Grammar grammar) {
         var nonTerminals = grammar.getNonTerminals();
+        var terminals = grammar.getTerminals();
+        var first = computeInitialFirst(grammar);
+
+        var hasChanged = true;
+        while (hasChanged) {
+            hasChanged = false;
+            var newFirst = new HashMap<String, Set<String>>();
+
+            for (var nonTerminal: nonTerminals) {
+                var toAdd = computeToAddForNonTerminal(nonTerminal, grammar, first);
+
+                if (!toAdd.equals(first.get(nonTerminal))) {
+                    hasChanged = true;
+                }
+                newFirst.put(nonTerminal, toAdd);
+            }
+            first = newFirst;
+        }
 
         for (var terminal: terminals) {
             first.computeIfAbsent(terminal, k -> new HashSet<>());
             first.get(terminal).add(terminal);
         }
 
+        return first;
+    }
+
+    private static HashMap<String, Set<String>> computeInitialFirst(Grammar grammar) {
+        var first = new HashMap<String, Set<String>>();
+        var terminals = grammar.getTerminals();
+        var nonTerminals = grammar.getNonTerminals();
+
         for (var nonTerminal: nonTerminals) {
             first.computeIfAbsent(nonTerminal, k -> new HashSet<>());
             var nonTerminalProductions = grammar.getProductions(nonTerminal);
 
-            for (var rhsTokens: nonTerminalProductions) {
-                if (terminals.contains(rhsTokens.get(0))) {
-                    first.get(nonTerminal).add(rhsTokens.get(0));
+            for (var production: nonTerminalProductions) {
+                if (terminals.contains(production.get(0))) {
+                    first.get(nonTerminal).add(production.get(0));
                 }
             }
         }
 
-        var done = false;
-        while (done) {
-            done = true;
+        return first;
+    }
 
-            for (var nonTerminal: nonTerminals) {
-                var productions = grammar.getProductions(nonTerminal);
+    private static Set<String> computeToAddForNonTerminal(String nonTerminal,
+                                                          Grammar grammar,
+                                                          HashMap<String, Set<String>> first) {
+        var nonTerminals = grammar.getNonTerminals();
+        var productions = grammar.getProductions(nonTerminal);
+        var toAdd = new HashSet<>(first.get(nonTerminal));
 
-                for (var production: productions) {
-
+        for (var production: productions) {
+            List<String> rhsNonTerminals = new ArrayList<>();
+            String rhsTerminal = null;
+            for (String symbol : production)
+                if (nonTerminals.contains(symbol))
+                    rhsNonTerminals.add(symbol);
+                else {
+                    rhsTerminal = symbol;
+                    break;
                 }
-            }
+            toAdd.addAll(computeConcatenationsOfLengthOne(first, rhsNonTerminals, rhsTerminal));
         }
-        return null;
+
+        return toAdd;
     }
 
     private static Set<String> computeConcatenationsOfLengthOne(Map<String, Set<String>> first,
-                                                                List<String> rhsTokens) {
-        int rhsSize = rhsTokens.size();
-        List<String> concatenation = IntStream.of(rhsSize).mapToObj(_value -> (String)null).toList();
+                                                                List<String> nonTerminals,
+                                                                String terminal) {
+        if (nonTerminals.size() == 0) {
+            return new HashSet<>();
+        }
 
-//        int index = 0;
-//        while (index >= 0 && index < rhsSize) {
-//            var currentToken = rhsTokens.get(0);
-//            var iterator = first.get(currentToken).iterator();
-//
-//
-//        }
+        if (nonTerminals.size() == 1) {
+            return first.get(nonTerminals.iterator().next());
+        }
 
-        return null;
+        var concatenation = new HashSet<String>();
+        var allEpsilon = true;
+
+        for (var nonTerminal : nonTerminals) {
+            if (!first.get(nonTerminal).contains(EPSILON)) {
+                allEpsilon = false;
+            }
+        }
+        if (allEpsilon) {
+            concatenation.add(Objects.requireNonNullElse(terminal, EPSILON));
+        }
+
+        for (var nonTerminal : nonTerminals) {
+            var noEpsilons = true;
+            for (var s : first.get(nonTerminal)) {
+                if (s.equals(EPSILON)) {
+                    noEpsilons = false;
+                }
+                else {
+                    concatenation.add(s);
+                }
+            }
+
+            if (noEpsilons) break;
+        }
+        return concatenation;
     }
 
     /**
-     * This function returns all the productions in which the given non terminal appear in the right hand side.
-     * @param nonTerminal -> the given nonterminal
+     * This function returns all the productions in which the given non terminal appear in the right-hand side.
+     * @param nonTerminal -> the given non terminal
      * @param grammar -> the given grammar
-     * @return
+     * @return all the productions
      */
     private static Map<String, Set<List<String>>> getNonTerminalProductions(String nonTerminal, Grammar grammar) {
         Map<String, Set<List<String>>> productions = grammar.getProductions();
@@ -90,7 +146,7 @@ public class LLParser {
         // If there is no item after the given nonterminal, return empty string (epsilon)
         // else return the next item.
         if (index == productionRHS.size() - 1) {
-            return "";
+            return EPSILON;
         } else {
             return productionRHS.get(index + 1);
         }
@@ -122,7 +178,7 @@ public class LLParser {
                         // get the first item after the non terminal whether it is a terminal, nonterminal or epsilon.
                         var firstItemAfter = getFirstItemAfter(production, nonTerminal);
                         for (var terminal : firstSet.get(firstItemAfter)) {
-                            if (terminal.equals("")) {
+                            if (terminal.equals(EPSILON)) {
                                 newFollowColumn.get(nonTerminal).addAll(follow.get(validProductions.getKey()));
                             } else {
                                 newFollowColumn.get(nonTerminal).addAll(follow.get(nonTerminal));
