@@ -17,6 +17,7 @@ public class Grammar {
         var productions = new HashMap<String, Set<String>>();
         var isCFG = true;
         var line = bufferedReader.readLine();
+        String start = null;
 
         if (line == null) {
             throw new RuntimeException("The format of the grammar file is not valid!");
@@ -32,6 +33,7 @@ public class Grammar {
             var nonTerminal = tokens[0].trim();
             if (nonTerminal.split(" ").length != 1) isCFG = false;
             nonTerminals.add(nonTerminal);
+            if (start == null) start = nonTerminal;
 
             var currentProductions = tokens[1].split("\\|");
             for (var production: currentProductions) {
@@ -50,7 +52,7 @@ public class Grammar {
             line = bufferedReader.readLine();
         }
 
-        return new Grammar(line, nonTerminals, terminals, productions, isCFG);
+        return new Grammar(start, nonTerminals, terminals, productions, isCFG);
     }
 
     private Grammar(String start, Set<String> nonTerminals, Set<String> terminals, Map<String, Set<String>> productions,

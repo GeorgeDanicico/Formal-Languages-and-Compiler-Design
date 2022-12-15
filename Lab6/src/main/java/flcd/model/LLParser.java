@@ -41,7 +41,7 @@ public class LLParser {
         // If there is no item after the given nonterminal, return empty string (epsilon)
         // else return the next item.
         if (index == nonTerminals.length - 1) {
-            return "";
+            return "\"\"";
         } else {
             return nonTerminals[index + 1];
         }
@@ -57,13 +57,14 @@ public class LLParser {
         Set<String> nonTerminals = grammar.getNonTerminals();
 
         for (String nonTerminal : grammar.getNonTerminals()) {
-            follow.put(nonTerminal, null);
+            follow.put(nonTerminal, new HashSet<>());
         }
 
-        follow.put(grammar.getStart(), new HashSet<>(){{add("");}});
-        boolean isChanged = true;
+        follow.put(grammar.getStart(), new HashSet<>(){{add("\"\"");}});
+        boolean isFollowChanged = true;
 
-        while (isChanged) {
+        while (isFollowChanged) {
+            isFollowChanged = false;
             Map<String, Set<String>> newFollowColumn = new HashMap<>();
 
             for (String nonTerminal : nonTerminals) {
@@ -72,13 +73,17 @@ public class LLParser {
                 for (var production : productions.entrySet()) {
                     var firstItemAfter = getFirstItemAfter(production.getValue(), nonTerminal);
                     for (var terminal : firstSet.get(firstItemAfter)) {
-                        if (terminal.equals("")) {
-                            isChanged = newFollowColumn.get(nonTerminal).addAll(follow.get(production.getKey()));
+                        if (terminal.equals("\"\"")) {
+                            newFollowColumn.get(nonTerminal).addAll(follow.get(production.getKey()));
                         } else {
-                            isChanged = newFollowColumn.get(nonTerminal).addAll(follow.get(production.getKey()));
-                            isChanged = newFollowColumn.get(nonTerminal).addAll(firstSet.get(firstItemAfter)) || isChanged;
+                            newFollowColumn.get(nonTerminal).addAll(follow.get(nonTerminal));
+                            newFollowColumn.get(nonTerminal).addAll(firstSet.get(firstItemAfter));
                         }
                     }
+                }
+
+                if (!newFollowColumn.get(nonTerminal).equals(follow.get(nonTerminal))) {
+                    isFollowChanged = true;
                 }
             }
             follow.putAll(newFollowColumn);
