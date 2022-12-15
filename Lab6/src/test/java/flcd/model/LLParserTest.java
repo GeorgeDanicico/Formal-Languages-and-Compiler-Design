@@ -1,6 +1,6 @@
 package flcd.model;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class LLParserTest extends TestCase {
+public class LLParserTest {
     private Grammar grammar;
     private final String EPSILON = "eps";
 
@@ -19,15 +19,15 @@ public class LLParserTest extends TestCase {
         var first = LLParser.computeFirst(grammar);
 
         System.out.println(first);
-        assertEquals(2, first.get("C").size());
-        assertTrue(first.get("C").contains("*"));
-        assertTrue(first.get("C").contains(EPSILON));
-        assertFalse(first.get("C").contains("a"));
+        Assert.assertEquals(2, first.get("C").size());
+        Assert.assertTrue(first.get("C").contains("*"));
+        Assert.assertTrue(first.get("C").contains(EPSILON));
+        Assert.assertFalse(first.get("C").contains("a"));
 
-        assertEquals(2, first.get("B").size());
-        assertTrue(first.get("A").contains("("));
-        assertTrue(first.get("A").contains("int"));
-        assertFalse(first.get("A").contains(EPSILON));
+        Assert.assertEquals(2, first.get("B").size());
+        Assert.assertTrue(first.get("A").contains("("));
+        Assert.assertTrue(first.get("A").contains("int"));
+        Assert.assertFalse(first.get("A").contains(EPSILON));
     }
 
     @Test
@@ -35,15 +35,15 @@ public class LLParserTest extends TestCase {
         grammar = Grammar.provideGrammar("src/main/java/flcd/io/grammar2.txt");
         var first = LLParser.computeFirst(grammar);
 
-        assertEquals(2, first.get("C").size());
-        assertTrue(first.get("C").contains("*"));
-        assertTrue(first.get("C").contains(EPSILON));
-        assertFalse(first.get("C").contains("a"));
+        Assert.assertEquals(2, first.get("C").size());
+        Assert.assertTrue(first.get("C").contains("*"));
+        Assert.assertTrue(first.get("C").contains(EPSILON));
+        Assert.assertFalse(first.get("C").contains("a"));
 
-        assertEquals(2, first.get("B").size());
-        assertTrue(first.get("B").contains("("));
-        assertTrue(first.get("B").contains("a"));
-        assertFalse(first.get("B").contains(EPSILON));
+        Assert.assertEquals(2, first.get("B").size());
+        Assert.assertTrue(first.get("B").contains("("));
+        Assert.assertTrue(first.get("B").contains("a"));
+        Assert.assertFalse(first.get("B").contains(EPSILON));
     }
 
     @Test
@@ -64,10 +64,10 @@ public class LLParserTest extends TestCase {
 
         Map<String, Set<String>> follow = LLParser.computeFollow(grammar, firstSet);
 
-        assertEquals(4, follow.size());
-        assertTrue(follow.containsKey("A"));
-        assertEquals(3, follow.get("A").size());
-        assertEquals(2, follow.get("S").size());
+        Assert.assertEquals(4, follow.size());
+        Assert.assertTrue(follow.containsKey("A"));
+        Assert.assertEquals(3, follow.get("A").size());
+        Assert.assertEquals(2, follow.get("S").size());
     }
 
     @Test
@@ -90,10 +90,10 @@ public class LLParserTest extends TestCase {
 
         Map<String, Set<String>> follow = LLParser.computeFollow(grammar, firstSet);
 
-        assertEquals(5, follow.size());
-        assertTrue(follow.containsKey("A"));
-        assertEquals(2, follow.get("A").size());
-        assertEquals(4, follow.get("D").size());
-        assertTrue(follow.get("D").contains("*"));
+        Assert.assertEquals(5, follow.size());
+        Assert.assertTrue(follow.containsKey("A"));
+        Assert.assertEquals(2, follow.get("A").size());
+        Assert.assertEquals(4, follow.get("D").size());
+        Assert.assertTrue(follow.get("D").contains("*"));
     }
 }
