@@ -18,7 +18,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        Grammar grammar = Grammar.provideGrammar("src/io/bnf-syntax.txt");
+        Grammar grammar = Grammar.provideGrammar("src/io/bnf-test.txt");
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
