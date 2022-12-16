@@ -1,5 +1,8 @@
 package flcd.model;
 
+import flcd.common.LLActions;
+import flcd.common.Pair;
+
 import java.util.*;
 
 public class LLParser {
@@ -196,6 +199,61 @@ public class LLParser {
         }
 
         return follow;
+    }
+
+    public Map<Pair, Pair> generateParseTable(Grammar grammar) throws RuntimeException {
+        Map<Pair, Pair> parseTable = new HashMap<>();
+        List<String> rows = new ArrayList<>();
+        List<String> columns = new ArrayList<>();
+
+        rows.addAll(grammar.getNonTerminals());
+        rows.addAll(grammar.getTerminals());
+        rows.add("$");
+
+        columns.addAll(grammar.getTerminals());
+        columns.add("$");
+
+        for (String row : rows) {
+            for (String column : columns) {
+                parseTable.put(new Pair<>(row, column), new Pair<>(LLActions.ERR.label, 0));
+            }
+        }
+
+        for (String column : columns)
+            parseTable.put(new Pair<>(column, column), new Pair<>(LLActions.POP.label, 0));
+
+        parseTable.put(new Pair<>("$", "$"), new Pair<>(LLActions.ACC.label, 0));
+
+        var productions = grammar.getProductions();
+        var productionsRhs = new ArrayList<>();
+        productions.forEach((nonTerminal, nonTerminalProductions) -> {
+            for (var production : nonTerminalProductions)
+                if(!production.get(0).equals(EPSILON)) {
+                    productionsRhs.add(production);
+                }  else {
+                    // TODO will be used later.
+                    productionsRhs.add(new ArrayList<>(List.of(EPSILON, nonTerminal)));
+                }
+        });
+
+        productions.forEach((nonTerminal, nonTerminalProductions) -> {
+
+            for (var production : nonTerminalProductions) {
+                var firstSymbol = production.get(0);
+
+                if (grammar.getTerminals().contains(firstSymbol)) {
+                    if (parseTable.get(new Pair<>(nonTerminal, firstSymbol)).getFirst().equals(LLActions.ERR.label))
+                        parseTable.put(new Pair<>(nonTerminal, firstSymbol), new Pair<>(String.join(" ", production), productionsRhs.indexOf(production) + 1));
+                    else {
+                        throw new RuntimeException("CONFLICT: Pair (" + nonTerminal + "," + firstSymbol + ") already has an entry in the table.");
+                    }
+                } else if (grammar.getNonTerminals().contains(firstSymbol)) {
+
+                }
+            }
+        });
+
+        return parseTable;
     }
 
 }
