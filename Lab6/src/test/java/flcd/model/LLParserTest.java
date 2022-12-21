@@ -1,14 +1,13 @@
 package flcd.model;
 
+import flcd.common.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 public class LLParserTest {
@@ -100,13 +99,50 @@ public class LLParserTest {
     }
 
     @Test
-    public void testComputeParsingTable() throws IOException {
+    public void testComputeParsingTable1() throws IOException {
         grammar = Grammar.provideGrammar("src/main/java/flcd/io/grammar2.txt");
 
         var parsingTable = LLParser.computeParseTable(grammar);
 
+        var productions = grammar.getProductions();
+
         assertNotNull(parsingTable);
 
-    }
+        Stack<String> inputStack = new Stack<>();
+        inputStack.push(EPSILON);
+        inputStack.push(")");
+        inputStack.push("a");
+        inputStack.push("+");
+        inputStack.push("a");
+        inputStack.push("(");
+        inputStack.push("*");
+        inputStack.push("a");
+        String transitions = "";
+        Stack<String> workStack = new Stack<>();
+        workStack.push(EPSILON);
+        workStack.add("S");
 
+        while (!workStack.isEmpty()) {
+            String row = workStack.peek();
+            String column = inputStack.peek();
+            if (row.equals(column)) {
+                workStack.pop();
+                inputStack.pop();
+            } else {
+                Pair<String, Integer> pair = parsingTable.get(new Pair<>(row, column));
+                var prod = pair.getFirst().split(" ");
+                workStack.pop();
+                for (int i = prod.length - 1; i >= 0; i--) {
+                    if (!prod[i].equals(EPSILON)) {
+                        workStack.push(prod[i]);
+                    }
+                }
+                var index = pair.getSecond();
+                transitions += index;
+            }
+        }
+
+        assertEquals(16, transitions.length());
+        assertEquals("6375863742374141", transitions);
+    }
 }

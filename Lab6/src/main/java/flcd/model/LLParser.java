@@ -221,12 +221,6 @@ public class LLParser {
         columns.addAll(grammar.getTerminals());
         columns.add(EPSILON);
 
-        for (String row : rows) {
-            for (String column : columns) {
-                parseTable.put(new Pair<>(row, column), new Pair<>("ERR", 0));
-            }
-        }
-
         for (String column : columns)
             parseTable.put(new Pair<>(column, column), new Pair<>("POP", 0));
 
@@ -239,7 +233,6 @@ public class LLParser {
                 if(!production.get(0).equals(EPSILON)) {
                     productionsRhs.add(production);
                 }  else {
-                    // TODO will be used later.
                     productionsRhs.add(new ArrayList<>(List.of(EPSILON, nonTerminal)));
                 }
         });
@@ -266,8 +259,20 @@ public class LLParser {
         return parseTable;
     }
 
-    public static Set<String> concatenateFirsts(Grammar grammar, List<String> productionsRhs, Map<String, Set<String>> firstSet) {
-        String firstSymbol = productionsRhs.get(0);
+    /**
+     * Concatenates the FIRSTS of the right hand side items using the logic from
+     * the method computeConcatenationsOfLengthOne.
+     * @param grammar -> given grammar
+     * @param productionRhs -> right hand side of a production
+     * @param firstSet -> the FIRST map
+     * @return -> a set containing the concatenation of the FIRSTs of the RHS items.
+     */
+    public static Set<String> concatenateFirsts(Grammar grammar, List<String> productionRhs, Map<String, Set<String>> firstSet) {
+        String firstSymbol = productionRhs.get(0);
+
+        if (productionRhs.size() == 1 & productionRhs.contains(EPSILON)) {
+            return new HashSet<>(){{add(EPSILON);}};
+        }
 
         if (!firstSet.get(firstSymbol).contains(EPSILON))
             return firstSet.get(firstSymbol);
@@ -275,7 +280,7 @@ public class LLParser {
         var nonTerminals = grammar.getNonTerminals();
         List<String> rhsNonTerminals = new ArrayList<>();
         String rhsTerminal = null;
-        for (String symbol : productionsRhs)
+        for (String symbol : productionRhs)
             if (nonTerminals.contains(symbol))
                 rhsNonTerminals.add(symbol);
             else {
@@ -286,9 +291,22 @@ public class LLParser {
         return computeConcatenationsOfLengthOne(firstSet, rhsNonTerminals, rhsTerminal);
     }
 
+    /**
+     * Adds a cell in the parsing table
+     * @param parseTable
+     * @param row -> the row of the table (nonTerminal)
+     * @param column -> the column of the table (terminal)
+     * @param production -> the corresponding production
+     * @param productionsRhs -> all productions RHS
+     */
     public static void addToTable(Map<Pair, Pair> parseTable, String row, String column, List<String> production, List<List<String>> productionsRhs) {
-        if (parseTable.get(new Pair<>(row, column)).getFirst().equals("ERR"))
-            parseTable.put(new Pair<>(row, column), new Pair<>(String.join(" ", production), productionsRhs.indexOf(production) + 1));
+        var prod = new ArrayList<>(production);
+
+        if (prod.size() == 1 && prod.get(0).equals(EPSILON)) {
+            prod.add(row);
+        }
+        if (!parseTable.containsKey(new Pair<>(row, column)))
+            parseTable.put(new Pair<>(row, column), new Pair<>(String.join(" ", production), productionsRhs.indexOf(prod) + 1));
         else {
             try {
                 throw new IllegalAccessException("CONFLICT: Pair " + row + ", " + column);
