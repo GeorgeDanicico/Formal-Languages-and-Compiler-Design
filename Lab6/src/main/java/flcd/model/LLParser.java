@@ -6,7 +6,7 @@ import flcd.common.Pair;
 import java.util.*;
 
 public class LLParser {
-    private static final String EPSILON = "";
+    private static final String EPSILON = "eps";
 
     public static Map<String, Set<String>> computeFirst(Grammar grammar) {
         var nonTerminals = grammar.getNonTerminals();
@@ -163,7 +163,7 @@ public class LLParser {
             follow.put(nonTerminal, new HashSet<>());
         }
 
-        follow.put(grammar.getStart(), new HashSet<>(){{add("");}});
+        follow.put(grammar.getStart(), new HashSet<>(){{add(EPSILON);}});
         boolean isFollowChanged = true;
 
         while (isFollowChanged) {
@@ -201,31 +201,39 @@ public class LLParser {
         return follow;
     }
 
-    public Map<Pair, Pair> generateParseTable(Grammar grammar) throws RuntimeException {
+    /**
+     * Generates the LL(1) parsing table for a grammar.
+     * @param grammar -> given grammar
+     * @return -> a Map representing the parsing table.
+     * @throws RuntimeException
+     */
+    public static Map<Pair, Pair> computeParseTable(Grammar grammar) throws RuntimeException {
         Map<Pair, Pair> parseTable = new HashMap<>();
         List<String> rows = new ArrayList<>();
         List<String> columns = new ArrayList<>();
+        var firstSet = computeFirst(grammar);
+        var followSet = computeFollow(grammar, firstSet);
 
         rows.addAll(grammar.getNonTerminals());
         rows.addAll(grammar.getTerminals());
-        rows.add("$");
+        rows.add(EPSILON);
 
         columns.addAll(grammar.getTerminals());
-        columns.add("$");
+        columns.add(EPSILON);
 
         for (String row : rows) {
             for (String column : columns) {
-                parseTable.put(new Pair<>(row, column), new Pair<>(LLActions.ERR.label, 0));
+                parseTable.put(new Pair<>(row, column), new Pair<>("ERR", 0));
             }
         }
 
         for (String column : columns)
-            parseTable.put(new Pair<>(column, column), new Pair<>(LLActions.POP.label, 0));
+            parseTable.put(new Pair<>(column, column), new Pair<>("POP", 0));
 
-        parseTable.put(new Pair<>("$", "$"), new Pair<>(LLActions.ACC.label, 0));
+        parseTable.put(new Pair<>(EPSILON, EPSILON), new Pair<>("ACC", 0));
 
         var productions = grammar.getProductions();
-        var productionsRhs = new ArrayList<>();
+        List<List<String>> productionsRhs = new ArrayList<>();
         productions.forEach((nonTerminal, nonTerminalProductions) -> {
             for (var production : nonTerminalProductions)
                 if(!production.get(0).equals(EPSILON)) {
@@ -239,21 +247,55 @@ public class LLParser {
         productions.forEach((nonTerminal, nonTerminalProductions) -> {
 
             for (var production : nonTerminalProductions) {
-                var firstSymbol = production.get(0);
+                var rhsFirst = concatenateFirsts(grammar, production, firstSet);
 
-                if (grammar.getTerminals().contains(firstSymbol)) {
-                    if (parseTable.get(new Pair<>(nonTerminal, firstSymbol)).getFirst().equals(LLActions.ERR.label))
-                        parseTable.put(new Pair<>(nonTerminal, firstSymbol), new Pair<>(String.join(" ", production), productionsRhs.indexOf(production) + 1));
-                    else {
-                        throw new RuntimeException("CONFLICT: Pair (" + nonTerminal + "," + firstSymbol + ") already has an entry in the table.");
+                for (var symbol : rhsFirst) {
+                    if (symbol.equals(EPSILON)) {
+                        var nonTerminalFollow = followSet.get(nonTerminal);
+
+                        for (var terminal : nonTerminalFollow) {
+                            addToTable(parseTable, nonTerminal, terminal, production, productionsRhs);
+                        }
+                    } else {
+                        addToTable(parseTable, nonTerminal, symbol, production, productionsRhs);
                     }
-                } else if (grammar.getNonTerminals().contains(firstSymbol)) {
-
                 }
             }
         });
 
         return parseTable;
+    }
+
+    public static Set<String> concatenateFirsts(Grammar grammar, List<String> productionsRhs, Map<String, Set<String>> firstSet) {
+        String firstSymbol = productionsRhs.get(0);
+
+        if (!firstSet.get(firstSymbol).contains(EPSILON))
+            return firstSet.get(firstSymbol);
+
+        var nonTerminals = grammar.getNonTerminals();
+        List<String> rhsNonTerminals = new ArrayList<>();
+        String rhsTerminal = null;
+        for (String symbol : productionsRhs)
+            if (nonTerminals.contains(symbol))
+                rhsNonTerminals.add(symbol);
+            else {
+                rhsTerminal = symbol;
+                break;
+            }
+
+        return computeConcatenationsOfLengthOne(firstSet, rhsNonTerminals, rhsTerminal);
+    }
+
+    public static void addToTable(Map<Pair, Pair> parseTable, String row, String column, List<String> production, List<List<String>> productionsRhs) {
+        if (parseTable.get(new Pair<>(row, column)).getFirst().equals("ERR"))
+            parseTable.put(new Pair<>(row, column), new Pair<>(String.join(" ", production), productionsRhs.indexOf(production) + 1));
+        else {
+            try {
+                throw new IllegalAccessException("CONFLICT: Pair " + row + ", " + column);
+            } catch (IllegalAccessException e) {
+                System.out.println("LOG ERROR: " + e.getMessage());
+            }
+        }
     }
 
 }

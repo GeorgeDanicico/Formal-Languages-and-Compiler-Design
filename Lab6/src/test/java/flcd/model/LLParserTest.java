@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static junit.framework.TestCase.assertNotNull;
+
 public class LLParserTest {
     private Grammar grammar;
     private final String EPSILON = "eps";
@@ -96,4 +98,15 @@ public class LLParserTest {
         Assert.assertEquals(4, follow.get("D").size());
         Assert.assertTrue(follow.get("D").contains("*"));
     }
+
+    @Test
+    public void testComputeParsingTable() throws IOException {
+        grammar = Grammar.provideGrammar("src/main/java/flcd/io/grammar2.txt");
+
+        var parsingTable = LLParser.computeParseTable(grammar);
+
+        assertNotNull(parsingTable);
+
+    }
+
 }
