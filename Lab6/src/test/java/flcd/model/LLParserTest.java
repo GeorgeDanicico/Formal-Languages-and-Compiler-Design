@@ -7,8 +7,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.*;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.*;
 
 public class LLParserTest {
     private Grammar grammar;
@@ -102,47 +101,14 @@ public class LLParserTest {
     public void testComputeParsingTable1() throws IOException {
         grammar = Grammar.provideGrammar("src/main/java/flcd/io/grammar2.txt");
 
-        var parsingTable = LLParser.computeParseTable(grammar);
+        List<String> sequence = Arrays.asList("a", "*", "(", "a", "+", "a", ")");
 
-        var productions = grammar.getProductions();
+        List<Integer> transitions = LLParser.parseSequence(grammar, sequence);
+        String transitionsStr = transitions.stream().map(Object::toString).reduce("", (str, e) -> str + e);
 
-        assertNotNull(parsingTable);
+        assertEquals("6375863742374141", transitionsStr);
 
-        Stack<String> inputStack = new Stack<>();
-        inputStack.push(EPSILON);
-        inputStack.push(")");
-        inputStack.push("a");
-        inputStack.push("+");
-        inputStack.push("a");
-        inputStack.push("(");
-        inputStack.push("*");
-        inputStack.push("a");
-        String transitions = "";
-        Stack<String> workStack = new Stack<>();
-        workStack.push(EPSILON);
-        workStack.add("S");
-
-        while (!workStack.isEmpty()) {
-            String row = workStack.peek();
-            String column = inputStack.peek();
-            if (row.equals(column)) {
-                workStack.pop();
-                inputStack.pop();
-            } else {
-                Pair<String, Integer> pair = parsingTable.get(new Pair<>(row, column));
-                var prod = pair.getFirst().split(" ");
-                workStack.pop();
-                for (int i = prod.length - 1; i >= 0; i--) {
-                    if (!prod[i].equals(EPSILON)) {
-                        workStack.push(prod[i]);
-                    }
-                }
-                var index = pair.getSecond();
-                transitions += index;
-            }
-        }
-
-        assertEquals(16, transitions.length());
-        assertEquals("6375863742374141", transitions);
+        ParserOutput parserOutput = new ParserOutput(grammar, sequence, "src/main/java/flcd/out/grammar2.txt");
+        parserOutput.printTree();
     }
 }

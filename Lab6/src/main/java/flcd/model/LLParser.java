@@ -3,6 +3,7 @@ package flcd.model;
 import flcd.common.LLActions;
 import flcd.common.Pair;
 
+import java.security.cert.CertPathBuilderSpi;
 import java.util.*;
 
 public class LLParser {
@@ -47,7 +48,7 @@ public class LLParser {
             var nonTerminalProductions = grammar.getProductions(nonTerminal);
 
             for (var production: nonTerminalProductions) {
-                if (terminals.contains(production.get(0))) {
+                if (terminals.contains(production.get(0)) || production.get(0).equals(EPSILON)) {
                     first.get(nonTerminal).add(production.get(0));
                 }
             }
@@ -180,12 +181,16 @@ public class LLParser {
                     for (var production : validProductions.getValue()) {
                         // get the first item after the non terminal whether it is a terminal, nonterminal or epsilon.
                         var firstItemAfter = getFirstItemAfter(production, nonTerminal);
-                        for (var terminal : firstSet.get(firstItemAfter)) {
-                            if (terminal.equals(EPSILON)) {
-                                newFollowColumn.get(nonTerminal).addAll(follow.get(validProductions.getKey()));
-                            } else {
-                                newFollowColumn.get(nonTerminal).addAll(follow.get(nonTerminal));
-                                newFollowColumn.get(nonTerminal).addAll(firstSet.get(firstItemAfter));
+                        if (firstItemAfter.equals(EPSILON)) {
+                            newFollowColumn.get(nonTerminal).addAll(follow.get(validProductions.getKey()));
+                        } else {
+                            for (var terminal : firstSet.get(firstItemAfter)) {
+                                if (terminal.equals(EPSILON)) {
+                                    newFollowColumn.get(nonTerminal).addAll(follow.get(validProductions.getKey()));
+                                } else {
+                                    newFollowColumn.get(nonTerminal).addAll(follow.get(nonTerminal));
+                                    newFollowColumn.get(nonTerminal).addAll(firstSet.get(firstItemAfter));
+                                }
                             }
                         }
                     }
@@ -314,6 +319,70 @@ public class LLParser {
                 System.out.println("LOG ERROR: " + e.getMessage());
             }
         }
+    }
+
+    public static List<Integer> parseSequence(Grammar grammar, List<String> sequence){
+        Stack<String> alpha = new Stack<>(); // input stack
+        Stack<String> beta = new Stack<>(); // working stack
+        List<Integer> result = new ArrayList<>();
+        Map<Pair, Pair> parseTable = computeParseTable(grammar);
+
+        //initialization
+        alpha.push(EPSILON); // EPSILON = $
+        for(int i = sequence.size() - 1; i >= 0; i--)
+            alpha.push(sequence.get(i));
+
+        beta.push(EPSILON);
+        beta.push(grammar.getStart());
+
+        while(!(alpha.peek().equals(EPSILON) && beta.peek().equals(EPSILON))){
+            String alphaPeek = alpha.peek();
+            String betaPeek = beta.peek();
+            Pair<String,String> key = new Pair<>(betaPeek,alphaPeek);
+            Pair<String,Integer> value = parseTable.get(key);
+
+            if(!value.getFirst().equals("ERR")){
+                if(value.getFirst().equals("POP")){
+                    alpha.pop();
+                    beta.pop();
+                }
+                else {
+                    beta.pop();
+                    if(!value.getFirst().equals(EPSILON)) {
+                        String[] val = value.getFirst().split(" ");
+                        for (var i = val.length - 1; i >= 0; --i)
+                            beta.push(val[i]);
+                    }
+                    result.add(value.getSecond());
+                }
+            }
+            else {
+                System.out.println("ERROR: Syntax error for key:  " + key);
+                System.out.println(String.format("Current alpha and beta for sequence parsing: \nalpha = %s\nbeta = %s", alpha, beta));
+                result = new ArrayList<>(List.of(-1));
+                return result;
+            }
+        }
+
+        return result;
+    }
+
+    public static List<String> getProductionByOrderNumber(Grammar grammar, int order) {
+        var productions = grammar.getProductions();
+        List<List<String>> productionsRhs = new ArrayList<>();
+        productions.forEach((nonTerminal, nonTerminalProductions) -> {
+            for (var production : nonTerminalProductions)
+                if(!production.get(0).equals(EPSILON)) {
+                    productionsRhs.add(production);
+                }  else {
+                    productionsRhs.add(new ArrayList<>(List.of(EPSILON, nonTerminal)));
+                }
+        });
+
+        var production = productionsRhs.get(order-1);
+        if(production.contains(EPSILON))
+            return List.of(EPSILON);
+        return production;
     }
 
 }

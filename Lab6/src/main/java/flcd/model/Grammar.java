@@ -10,6 +10,7 @@ public class Grammar {
     private final Set<String> terminals;
     private final Map<String, Set<List<String>>> productions;
     private final boolean isContextFree;
+    private final static String EPSILON = "eps";
 
     public static Grammar provideGrammar(String fileName) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
@@ -48,7 +49,10 @@ public class Grammar {
                     var length = token.length();
                     if (length >= 2 && token.charAt(0) == '"' && token.charAt(length - 1) == '"') {
                         var trimmedTerminal = token.substring(1, length - 1);
-                        terminals.add(trimmedTerminal);
+                        // TODO remove epsilon from terminals set
+                        if (!trimmedTerminal.equals(EPSILON)) {
+                            terminals.add(trimmedTerminal);
+                        }
                         updatedTokens.add(trimmedTerminal);
                     }
                     else {
