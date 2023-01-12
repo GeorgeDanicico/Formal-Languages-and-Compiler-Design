@@ -11,36 +11,38 @@ public class TokenTable {
         tokenTable.put("-", 2);
         tokenTable.put("*", 3);
         tokenTable.put("/", 4);
-        tokenTable.put("%", 5);
-        tokenTable.put("<", 6);
-        tokenTable.put("<=", 7);
-        tokenTable.put(">=", 8);
-        tokenTable.put("!=", 9);
-        tokenTable.put("==", 10);
-        tokenTable.put(":=", 11);
-        tokenTable.put(";", 12);;
-        tokenTable.put("]", 13);
-        tokenTable.put("[", 14);
-        tokenTable.put("(", 15);
-        tokenTable.put(")", 16);
-        tokenTable.put("/n", 17);
-        tokenTable.put(" ", 18);
-        tokenTable.put("int", 19);
-        tokenTable.put("char", 20);
-        tokenTable.put("while", 21);
-        tokenTable.put("do", 22);
-        tokenTable.put("read", 23);
-        tokenTable.put("write", 24);
-        tokenTable.put("for", 25);
-        tokenTable.put("if", 26);
-        tokenTable.put("constant", 27);
-        tokenTable.put(",", 28);
-        tokenTable.put(">", 29);
+        tokenTable.put("<", 5);
+        tokenTable.put("begin", 6);
+        tokenTable.put(">=", 7);
+        tokenTable.put("<=", 8);
+        tokenTable.put("==", 9);
+        tokenTable.put("=", 10);
+        tokenTable.put(";", 11);
+        tokenTable.put("]", 12);
+        tokenTable.put("[", 13);
+        tokenTable.put("(", 14);
+        tokenTable.put(")", 15);
+        tokenTable.put("/n", 16);
+        tokenTable.put(" ", 17);
+        tokenTable.put("int", 18);
+        tokenTable.put("char", 19);
+        tokenTable.put("while", 20);
+        tokenTable.put("read", 21);
+        tokenTable.put("write", 22);
+        tokenTable.put("for", 23);
+        tokenTable.put("if", 24);
+        tokenTable.put(",", 25);
+        tokenTable.put(">", 26);
+        tokenTable.put("end", 27);
+        tokenTable.put(".", 28);
+        tokenTable.put("prgrm", 29);
+        tokenTable.put(":", 30);
 
     }
 
     public TokenTable() {
         tokenTable = new HashMap<>();
+        tokenTable.put("constant", -1);
         tokenTable.put("identifier", 0);
         initializeTokenTable();
     }

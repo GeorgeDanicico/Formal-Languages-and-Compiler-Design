@@ -30,7 +30,7 @@ public class Pair<T, V> {
 
     @Override
     public String toString() {
-        return "(First: " + first + ", Second: " + second + ")";
+        return "( " + first + " , " + second + " )";
     }
 
     @Override

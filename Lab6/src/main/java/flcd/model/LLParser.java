@@ -243,7 +243,6 @@ public class LLParser {
         });
 
         productions.forEach((nonTerminal, nonTerminalProductions) -> {
-
             for (var production : nonTerminalProductions) {
                 var rhsFirst = concatenateFirsts(grammar, production, firstSet);
 
@@ -329,8 +328,16 @@ public class LLParser {
 
         //initialization
         alpha.push(EPSILON); // EPSILON = $
-        for(int i = sequence.size() - 1; i >= 0; i--)
-            alpha.push(sequence.get(i));
+        for(int i = sequence.size() - 1; i >= 0; i--) {
+            if (grammar.getTerminals().contains(sequence.get(i))) {
+                alpha.push(sequence.get(i));
+            } else {
+                String[] splitSequence = sequence.get(i).split("");
+                for (int j = splitSequence.length - 1; j >= 0; j--) {
+                    alpha.push(splitSequence[j]);
+                }
+            }
+        }
 
         beta.push(EPSILON);
         beta.push(grammar.getStart());

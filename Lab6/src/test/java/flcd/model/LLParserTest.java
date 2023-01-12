@@ -111,4 +111,30 @@ public class LLParserTest {
         ParserOutput parserOutput = new ParserOutput(grammar, sequence, "src/main/java/flcd/out/grammar2.txt");
         parserOutput.printTree();
     }
+
+    @Test
+    public void testComputeParsingTable2() throws IOException {
+        grammar = Grammar.provideGrammar("src/main/java/flcd/io/bnf-syntax.txt");
+        var first = LLParser.computeFirst(grammar);
+        var follow = LLParser.computeFollow(grammar, first);
+        String sequenceString = "prgrm lab1 ; var v1 : int , v2 : int , v3 : int , max : int ; begin read v1 ; read v2 ; read v3 ; max = v1 ; if max < v2 then max = v2 ; " +
+                "if max < v3 then max = v3 ; write max ; end .";
+//        prgrm test;
+//
+//        var lftc: int;
+//
+//        begin
+//             lftc=1;
+//             write lftc;
+//        end.
+
+        List<String> sequence = Arrays.asList(sequenceString.split(" "));
+        List<Integer> transitions = LLParser.parseSequence(grammar, sequence);
+//        String transitionsStr = transitions.stream().map(Object::toString).reduce("", (str, e) -> str + e);
+//
+//        assertEquals("6375863742374141", transitionsStr);
+//
+//        ParserOutput parserOutput = new ParserOutput(grammar, sequence, "src/main/java/flcd/out/bnf-syntax.txt");
+//        parserOutput.printTree();
+    }
 }

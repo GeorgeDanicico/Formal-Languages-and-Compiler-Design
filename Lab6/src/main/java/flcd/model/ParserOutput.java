@@ -23,7 +23,7 @@ public class ParserOutput {
         generateTree();
     }
 
-    public void generateTree(){
+        public void generateTree(){
         if(hasErrors)
             return;
 

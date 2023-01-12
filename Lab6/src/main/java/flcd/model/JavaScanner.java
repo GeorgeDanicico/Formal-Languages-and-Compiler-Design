@@ -50,8 +50,8 @@ public class JavaScanner {
         this.tokenTable = new TokenTable();
         this.symbolTable = new SymbolTable(SYMBOL_TABLE_SIZE);
         this.programInternalForm = new ProgramInternalForm();
-        this.integerFA = new FiniteAutomaton("src/integer.csv");
-        this.identifierFA = new FiniteAutomaton("src/identifier.csv");
+        this.integerFA = new FiniteAutomaton("src/main/java/flcd/io/integer.csv");
+        this.identifierFA = new FiniteAutomaton("src/main/java/flcd/io/identifier.csv");
     }
 
     // Formats the line
@@ -92,7 +92,7 @@ public class JavaScanner {
                 startIndex = i;
                 int endIndex = findIdentifier(line, startIndex);
 
-                if (endIndex < line.length()) {
+                if (endIndex <= line.length()) {
                     String string = line.substring(startIndex, endIndex);
                     i = endIndex - 1;
                     sb.append(string).append(LINE_SEPARATOR);
@@ -129,11 +129,14 @@ public class JavaScanner {
         for (String token : lineElements) {
             Boolean isLineLexicalCorrect = true;
             String unknownToken = "";
+            if (token.equals("begin")) {
+                System.out.println("debug");
+            }
             if (!tokenTable.searchToken(token)) {
                 if (isCharConstant(token) || integerFA.checkIfSequenceIsValid(token)) {
                     symbolTable.add(token);
                     Pair<Integer, Integer> symbolTablePosition = symbolTable.position(token);
-                    programInternalForm.add("constant", 27, symbolTablePosition);
+                    programInternalForm.add(token, -1, symbolTablePosition);
                 } else {
                     String tk = isIdentifier(token);
 
@@ -147,7 +150,7 @@ public class JavaScanner {
 
                         symbolTable.add(tk);
                         Pair<Integer, Integer> symbolTablePosition = symbolTable.position(tk);
-                        programInternalForm.add("identifier", 0, symbolTablePosition);
+                        programInternalForm.add(token, 0, symbolTablePosition);
                     } else {
                         isLineLexicalCorrect = false;
                         unknownToken = token;

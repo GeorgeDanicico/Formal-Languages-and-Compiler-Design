@@ -22,8 +22,8 @@ public class ProgramInternalForm {
 
         int index = 0;
         for (var triplet : programInternalForm) {
-            stringBuilder.append("Token: " + triplet.getFirst() + "; Token Code: " + triplet.getSecond() + "; "
-                + "Symbol Table Position: " + triplet.getThird() + ";\n");
+            stringBuilder.append(triplet.getFirst() + " -> ( " + triplet.getSecond() + " ; "
+                + triplet.getThird() + " ) ;\n");
                     index ++;
         }
 
