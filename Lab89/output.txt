@@ -1,0 +1,57 @@
+Reserved token: prgrm
+Identifier: lab1
+Separator: ;
+Reserved token: var
+Identifier: v1
+Separator: :
+Reserved token: int
+Separator: ,
+Identifier: v2
+Separator: :
+Reserved token: int
+Separator: ,
+Identifier: v3
+Separator: :
+Reserved token: int
+Separator: ,
+Identifier: max
+Separator: :
+Reserved token: int
+Separator: ;
+Reserved token: begin
+Reserved token: read
+Identifier: v1
+Separator: ;
+Reserved token: read
+Identifier: v2
+Separator: ;
+Reserved token: read
+Identifier: v3
+Separator: ;
+Identifier: max
+Operator: =
+Identifier: v1
+Separator: ;
+Reserved token: if
+Identifier: max
+Operator: <
+Identifier: v2
+Reserved token: then
+Identifier: max
+Operator: =
+Identifier: v2
+Separator: ;
+Reserved token: if
+Identifier: max
+Operator: <
+Identifier: v3
+Reserved token: then
+Identifier: max
+Operator: =
+Identifier: v3
+Separator: ;
+Reserved token: write
+Identifier: max
+Separator: ;
+Reserved token: end
+Separator: .

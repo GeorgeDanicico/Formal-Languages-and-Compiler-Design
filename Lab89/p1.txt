@@ -1,0 +1,13 @@
+prgrm lab1 ;
+var 1v1 : int , v2 : int , v3 : int , max : int ;
+begin
+read v1;
+read v2;
+read v3;
+max = v1;
+
+if max < v2 then max = v2 ;
+
+if max < v3 then max = v3 ;
+write max ;
+end .
