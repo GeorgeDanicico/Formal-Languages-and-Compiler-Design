@@ -1662,7 +1662,7 @@ yyreturn:
 
 yyerror(char *s)
 {	
-	printf("%s\n",s);
+	printf("Finished execution.\n");
 }
 
 extern FILE *yyin;
@@ -1673,3 +1673,4 @@ main(int argc, char **argv)
 	if(argc>2 && !strcmp(argv[2],"-d")) yydebug: 1;
 	if(!yyparse()) fprintf(stderr, "\tProgram is syntactically correct.\n");
 }
+

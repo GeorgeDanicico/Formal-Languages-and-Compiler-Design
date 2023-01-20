@@ -1,0 +1,24 @@
+
+0
+java:S1220""Move this file to a named package.
+S	java:S106"9Replace this use of System.out or System.err by a logger.(ŞìÔêÿÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(šºÛîùÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(¿Âæ…
+N	java:S106"9Replace this use of System.out or System.err by a logger.(³°ã
+N	java:S106"9Replace this use of System.out or System.err by a logger.(é±Â
+S	java:S106"9Replace this use of System.out or System.err by a logger.(½çòãüÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(ïÚâÀşÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(ÿíšôùÿÿÿÿ
+<	java:S131""Add a default case to this switch.(¸ìù«üÿÿÿÿ
+N	java:S106!"9Replace this use of System.out or System.err by a logger.(ŞŒïÜ
+N	java:S106$"9Replace this use of System.out or System.err by a logger.(Ë¦Ã
+N	java:S106'"9Replace this use of System.out or System.err by a logger.(ÿÆ¯Á
+N	java:S106*"9Replace this use of System.out or System.err by a logger.(”§ç™
+S	java:S106,"9Replace this use of System.out or System.err by a logger.(«óğóúÿÿÿÿ
+N	java:S1060"9Replace this use of System.out or System.err by a logger.(„Ğ‰†
+M
+java:S1128"2Remove this unused import 'model.FiniteAutomaton'.(©¨ø˜ıÿÿÿÿ
+I
+java:S1128".Remove this unused import 'model.JavaScanner'.(¼ÀÒÚûÿÿÿÿ
+D
+java:S1128".Remove this unused import 'model.SymbolTable'.(Ã§Ñ

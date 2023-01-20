@@ -1,5 +1,5 @@
 prgrm lab1 ;
-var v1 # int , v2 : int , v3 : int , max : int ;
+var v1 : int , v2 : int , v3 : int , max : int ;
 begin
 read v1;
 read v2;

@@ -355,8 +355,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 42
-#define YY_END_OF_BUFFER 43
+#define YY_NUM_RULES 43
+#define YY_END_OF_BUFFER 44
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -366,7 +366,7 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[98] =
     {   0,
-        0,    0,   43,   42,   36,   37,   42,   25,   26,   16,
+        0,    0,   44,   42,   36,   37,   42,   25,   26,   16,
        14,   30,   15,   29,   17,   34,   34,   28,   27,   21,
        18,   22,   33,   31,   32,   38,   33,   33,   33,   33,
        33,   33,   33,   33,   33,   33,   42,   36,   37,   35,
@@ -997,29 +997,34 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 59 "scanner.lxi"
-{printf("Illegal identifier at line %d\n", currentLine); return -1;}
+{printf("Lexical Error. Illegal identifier at line %d\n", currentLine); return -1;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 60 "scanner.lxi"
-{printf("Illegal numeric constant at line %d\n", currentLine); return -1;}
+{printf("Lexical Error. Illegal numeric constant at line %d\n", currentLine); return -1;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 61 "scanner.lxi"
-{printf("Illegal numeric constant at line %d\n", currentLine); return -1;}
+{printf("Lexical Error. Illegal numeric constant at line %d\n", currentLine); return -1;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 62 "scanner.lxi"
-{printf("Illegal string constant at line %d\n", currentLine); return -1;}
+{printf("Lexical Error. Illegal string constant at line %d\n", currentLine); return -1;}
 	YY_BREAK
 case 42:
+YY_RULE_SETUP
+#line 63 "scanner.lxi"
+{printf("Syntax error at line %d\n", currentLine); return -1;}
+	YY_BREAK
+case 43:
 YY_RULE_SETUP
 #line 64 "scanner.lxi"
 ECHO;
 	YY_BREAK
-#line 1022 "lex.yy.c"
+#line 1027 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

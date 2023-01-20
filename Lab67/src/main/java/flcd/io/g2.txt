@@ -1,0 +1,37 @@
+program = "prgrm" identifier ";" "var" decllist "begin" stmtlist "end" "."
+identifier = letter string
+decllist = declaration ";" decllist | eps
+declaration = identifier ":" type identifierlist
+identifierlist = "," declaration | eps
+simpletype = "char" | "int"
+arraydecl = "array" "[" unsignnumber "]" "of" simpletype
+type  = simpletype | arraydecl
+stmtlist = stmt ";" stmtlist | eps
+stmt = simplestmt | structstmt
+simplestmt = assignstmt | iostmt
+assignstmt = identifier "=" expression
+sign = "+" | "-" | "*" | "/"
+expression = term sign_and_expression
+sign_and_expression = sign expression | eps
+term = identifier | noconst
+iostmt = readstmt | writestmt
+readstmt = "read" identifier
+writestmt = "write" writeinput
+writeinput = term | stringconst
+structstmt = ifstmt | whilestmt
+expression1 = expression
+expression2 = expression
+condition = expression1 relation expression2
+ifstmt = "if" condition "then" stmt elsestmt
+elsestmt = "else" stmt | eps
+whilestmt = "while" condition "do" stmt
+relation = "<" | "<=" | "==" | "<>" | ">=" | ">"
+noconst = unsignnumber | sign unsignnumber | "0"
+unsignnumber = nonzero digits
+digits = digit digits | eps
+digit = "0" | nonzero
+nonzero = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+letter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+stringconst = "'" string "'"
+string = char string | eps
+char = letter | digit
